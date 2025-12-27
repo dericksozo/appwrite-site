@@ -5,7 +5,7 @@ import { Projects } from "@/components/work/Projects";
 
 import { baseURL, routes } from "@/app/resources";
 import { home, about, person, newsletter } from "@/app/resources/content";
-import { Mailchimp } from "@/components";
+import { Mailchimp, Testimonials } from "@/components";
 import { Posts } from "@/components/blog/Posts";
 
 export async function generateMetadata() {
@@ -78,10 +78,8 @@ export default function Home() {
             <Button
               id="about"
               data-border="rounded"
-              href="/about"
               variant="secondary"
               size="m"
-              arrowIcon
             >
               <Flex gap="8" vertical="center">
                 {about.avatar.display && (
@@ -104,15 +102,30 @@ export default function Home() {
         <Flex fillWidth gap="24" mobileDirection="column">
           <Flex flex={1} paddingLeft="l">
             <Heading as="h2" variant="display-strong-xs" wrap="balance">
-              Latest from the blog
+              More Case Studies
             </Heading>
           </Flex>
           <Flex flex={3} paddingX="20">
-            <Posts range={[1, 2]} columns="2" />
+            <Posts range={[1, 2]} columns="2" thumbnail />
           </Flex>
         </Flex>
       )}
-      <Projects range={[2]} />
+      <Column fillWidth gap="l">
+        <Flex fillWidth paddingLeft="l">
+          <Heading as="h2" variant="display-strong-xs" wrap="balance">
+            Recommendations
+          </Heading>
+        </Flex>
+        <Testimonials />
+      </Column>
+      <Column fillWidth gap="l" paddingX="l">
+        <Heading as="h2" variant="display-strong-xs" wrap="balance">
+          Why Appwrite
+        </Heading>
+        <Text variant="body-default-m" onBackground="neutral-weak" wrap="balance">
+        I can reason about Appwrite's core products like a developer, not just document them from the outside. I understand backend platforms from both the writing and building side. On the building side, I've developed JavaScript wrappers for APIs, built working apps to showcase SDKs, and worked closely with authentication flows, databases, and realtime functionality.
+        </Text>
+      </Column>
       {newsletter.display && <Mailchimp newsletter={newsletter} />}
     </Column>
   );

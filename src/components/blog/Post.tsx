@@ -1,8 +1,9 @@
 "use client";
 
-import { Column, Flex, Heading, SmartImage, SmartLink, Tag, Text } from "@/once-ui/components";
+import { Avatar, Column, Flex, Heading, SmartImage, SmartLink, Tag, Text } from "@/once-ui/components";
 import styles from "./Posts.module.scss";
 import { formatDate } from "@/app/utils/formatDate";
+import { person } from "@/app/resources/content";
 
 interface PostProps {
   post: any;
@@ -11,6 +12,7 @@ interface PostProps {
 
 export default function Post({ post, thumbnail }: PostProps) {
   const tags = post.metadata.tag.split(",").map((tag: string) => tag.trim());
+  const href = post.metadata.externalLink || `/blog/${post.slug}`;
 
   return (
     <SmartLink
@@ -18,20 +20,19 @@ export default function Post({ post, thumbnail }: PostProps) {
       className={styles.hover}
       unstyled
       key={post.slug}
-      href={`/blog/${post.slug}`}
+      href={href}
     >
-      <Flex
+      <Column
         position="relative"
-        mobileDirection="column"
         fillWidth
         paddingY="12"
         paddingX="16"
-        gap="32"
+        gap="16"
       >
         {post.metadata.image && thumbnail && (
           <SmartImage
             priority
-            maxWidth={20}
+            fillWidth
             className={styles.image}
             sizes="640px"
             border="neutral-alpha-weak"
@@ -42,13 +43,22 @@ export default function Post({ post, thumbnail }: PostProps) {
             aspectRatio="16 / 9"
           />
         )}
-        <Column position="relative" fillWidth gap="8" vertical="center">
+        <Column position="relative" fillWidth gap="8">
           <Heading as="h2" variant="heading-strong-l" wrap="balance">
             {post.metadata.title}
           </Heading>
-          <Text variant="label-default-s" onBackground="neutral-weak">
-            {post.metadata.publishedAt && formatDate(post.metadata.publishedAt, false)}
-          </Text>
+          <Flex gap="12" vertical="center">
+            <Avatar src={person.avatar} size="s" />
+            <Text variant="label-default-s" onBackground="neutral-weak">
+              {person.name}
+            </Text>
+            <Text variant="label-default-s" onBackground="neutral-weak">
+              •
+            </Text>
+            <Text variant="label-default-s" onBackground="neutral-weak">
+              {post.metadata.publishedAt && formatDate(post.metadata.publishedAt, false)}
+            </Text>
+          </Flex>
           {tags.length > 0 && (
             <Flex gap="8">
               {tags.map((tag: string, index: number) =>
@@ -57,7 +67,7 @@ export default function Post({ post, thumbnail }: PostProps) {
             </Flex>
           )}
         </Column>
-      </Flex>
+      </Column>
     </SmartLink>
   );
 }
